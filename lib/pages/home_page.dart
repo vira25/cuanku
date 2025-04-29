@@ -9,7 +9,7 @@ class HomePage extends StatelessWidget {
     final List<Map<String, dynamic>> transactions = [
       {
         'id': 1,
-        'nama': 'Gaji Bulanan',
+        'nama': 'Gaji Pertama',
         'tanggal': '2025-04-02',
         'jumlah': 5000000,
         'tipe': 'pemasukan',
@@ -20,6 +20,13 @@ class HomePage extends StatelessWidget {
         'tanggal': '2025-04-03',
         'jumlah': 150000,
         'tipe': 'pengeluaran',
+      },
+      {
+        'id': 2,
+        'nama': 'Gaji Kedua',
+        'tanggal': '2025-05-02',
+        'jumlah': 10000000,
+        'tipe': 'pemasukan',
       },
     ];
 
@@ -37,11 +44,12 @@ class HomePage extends StatelessWidget {
         actions: [
           IconButton(
             icon: Icon(Icons.add),
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => const Createpage()),
-              );
-            },
+            onPressed: () {},
+            // onPressed: () {
+            //   Navigator.of(context).push(
+            //     MaterialPageRoute(builder: (context) => const Createpage()),
+            //   );
+            // },
           ),
         ],
       ),
