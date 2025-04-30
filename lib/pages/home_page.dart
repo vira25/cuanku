@@ -22,7 +22,7 @@ class HomePage extends StatelessWidget {
         'tipe': 'pengeluaran',
       },
       {
-        'id': 2,
+        'id': 3,
         'nama': 'Gaji Kedua',
         'tanggal': '2025-05-02',
         'jumlah': 10000000,
