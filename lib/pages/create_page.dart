@@ -9,6 +9,8 @@ class CreatePage extends StatefulWidget {
 }
 
 class _CreatePageState extends State<CreatePage> {
+  final TextEditingController tangggalController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,7 +19,16 @@ class _CreatePageState extends State<CreatePage> {
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: SingleChildScrollView(
-            child: Column(crossAxisAlignment: CrossAxisAlignment.start),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text("Tanggal"),
+                TextField(
+                  controller: tangggalController,
+                  decoration: const InputDecoration(hintText: "YYYY-MM-DD"),
+                ),
+              ],
+            ),
           ),
         ),
       ),
