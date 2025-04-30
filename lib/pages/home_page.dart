@@ -93,6 +93,18 @@ class HomePage extends StatelessWidget {
                                 isIncome ? Icons.download : Icons.upload,
                                 color: isIncome ? Colors.green : Colors.red,
                               ),
+                              trailing: Wrap(
+                                children: [
+                                  IconButton(
+                                    icon: Icon(Icons.edit, color: Colors.blue),
+                                    onPressed: () {},
+                                  ),
+                                  IconButton(
+                                    icon: Icon(Icons.delete, color: Colors.red),
+                                    onPressed: () {},
+                                  ),
+                                ],
+                              ),
                             );
                           },
                         ),
