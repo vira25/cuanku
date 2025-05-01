@@ -57,7 +57,7 @@ class _CreatePageState extends State<CreatePage> {
                   },
                 ),
                 const SizedBox(height: 16),
-                const Text("julah"),
+                const Text("jumlah"),
                 TextField(
                   controller: jumlahController,
                   keyboardType: TextInputType.number,
