@@ -11,10 +11,13 @@ class CreatePage extends StatefulWidget {
 class _CreatePageState extends State<CreatePage> {
   final TextEditingController tangggalController = TextEditingController();
   final TextEditingController namaController = TextEditingController();
+
+  String tipeTransaksi = 'pemasukan';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Tambah Transalsi")),
+      appBar: AppBar(title: const Text("Tambah Transaksi")),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -30,6 +33,28 @@ class _CreatePageState extends State<CreatePage> {
                 const SizedBox(height: 16),
                 const Text("Nama Transaksi"),
                 TextField(controller: namaController),
+                const SizedBox(height: 16),
+                const Text("Tipe Transaksi"),
+                RadioListTile(
+                  title: const Text('pemasukan'),
+                  value: 'pemasukan',
+                  groupValue: tipeTransaksi,
+                  onChanged: (value) {
+                    setState(() {
+                      tipeTransaksi = value.toString();
+                    });
+                  },
+                ),
+                RadioListTile(
+                  title: const Text('pengeluaran'),
+                  value: 'pengeluaran',
+                  groupValue: tipeTransaksi,
+                  onChanged: (value) {
+                    setState(() {
+                      tipeTransaksi = value.toString();
+                    });
+                  },
+                ),
               ],
             ),
           ),

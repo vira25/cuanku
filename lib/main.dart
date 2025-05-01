@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:cuanku/pages/create_page.dart';
 import 'package:cuanku/pages/home_page.dart';
 
 const String supabaseKey =
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Cuanku yey',
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: const HomePage(),
+      home: const CreatePage(),
     );
   }
 }
