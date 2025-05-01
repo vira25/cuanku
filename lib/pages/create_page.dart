@@ -11,6 +11,7 @@ class CreatePage extends StatefulWidget {
 class _CreatePageState extends State<CreatePage> {
   final TextEditingController tangggalController = TextEditingController();
   final TextEditingController namaController = TextEditingController();
+  final TextEditingController jumlahController = TextEditingController();
 
   String tipeTransaksi = 'pemasukan';
 
@@ -54,6 +55,19 @@ class _CreatePageState extends State<CreatePage> {
                       tipeTransaksi = value.toString();
                     });
                   },
+                ),
+                const SizedBox(height: 16),
+                const Text("julah"),
+                TextField(
+                  controller: jumlahController,
+                  keyboardType: TextInputType.number,
+                ),
+                const SizedBox(height: 16),
+                Center(
+                  child: ElevatedButton(
+                    onPressed: () {},
+                    child: const Text("Simpan"),
+                  ),
                 ),
               ],
             ),
