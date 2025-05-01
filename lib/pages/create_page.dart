@@ -10,7 +10,7 @@ class CreatePage extends StatefulWidget {
 
 class _CreatePageState extends State<CreatePage> {
   final TextEditingController tangggalController = TextEditingController();
-
+  final TextEditingController namaController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,6 +27,9 @@ class _CreatePageState extends State<CreatePage> {
                   controller: tangggalController,
                   decoration: const InputDecoration(hintText: "YYYY-MM-DD"),
                 ),
+                const SizedBox(height: 16),
+                const Text("Nama Transaksi"),
+                TextField(controller: namaController),
               ],
             ),
           ),
