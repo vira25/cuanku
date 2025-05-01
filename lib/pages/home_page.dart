@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 //import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:cuanku/pages/create_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -44,12 +45,11 @@ class HomePage extends StatelessWidget {
         actions: [
           IconButton(
             icon: Icon(Icons.add),
-            onPressed: () {},
-            // onPressed: () {
-            //   Navigator.of(context).push(
-            //     MaterialPageRoute(builder: (context) => const Createpage()),
-            //   );
-            // },
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => const CreatePage()),
+              );
+            },
           ),
         ],
       ),

@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Cuanku yey',
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: const CreatePage(),
+      home: const HomePage(),
     );
   }
 }
