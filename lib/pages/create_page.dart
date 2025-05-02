@@ -65,7 +65,15 @@ class _CreatePageState extends State<CreatePage> {
                 const SizedBox(height: 16),
                 Center(
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      final transaksiBaru = {
+                        'tanggal': tangggalController.text,
+                        'nama': namaController.text,
+                        'tipe': tipeTransaksi,
+                        'jumlah': int.parse(jumlahController.text),
+                      };
+                      Navigator.pop(context, transaksiBaru);
+                    },
                     child: const Text("Simpan"),
                   ),
                 ),

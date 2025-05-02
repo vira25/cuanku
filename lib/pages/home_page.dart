@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 //import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:cuanku/pages/create_page.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final List<Map<String, dynamic>> transactions = [
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+    final List<Map<String, dynamic>> daftarTransaksi = [
       {
         'id': 1,
         'nama': 'Gaji Pertama',
@@ -31,54 +34,46 @@ class HomePage extends StatelessWidget {
       },
     ];
 
-    int totalIncome = transactions
-        .where((transaction) => transaction['tipe'] == 'pemasukan')
-        .fold(0, (sum, transaction) => sum + (transaction['jumlah'] as int));
+    int get totalPemasukan => daftarTransaksi
+        .where((transaksi) => transaksi['tipe'] == 'pemasukan')
+        .fold(0, (sum, transaksi) => sum + (transaksi['jumlah'] as int));
 
-    int totalExpense = transactions
-        .where((transaction) => transaction['tipe'] == 'pengeluaran')
-        .fold(0, (sum, transaction) => sum + (transaction['jumlah'] as int));
+    int get totalPengeluaran => daftarTransaksi
+        .where((transaksi) => transaksi['tipe'] == 'pengeluaran')
+        .fold(0, (sum, transaksi) => sum + (transaksi['jumlah'] as int));
 
-    return Scaffold(
+    @override
+    Widget build(BuildContext context) {
+      return Scaffold(
       appBar: AppBar(
         title: Text('Uang Lalu lintas'),
-        // actions: [
-        //   IconButton(
-        //     icon: Icon(Icons.add),
-        //     onPressed: () {
-        //       Navigator.of(context).push(
-        //         MaterialPageRoute(builder: (context) => const CreatePage()),
-        //       );
-        //     },
-        //   ),
-        // ],
       ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
-              Text('Total Pemasukan: Rp$totalIncome'),
+              Text('Total Pemasukan: Rp$totalPemasukan'),
               SizedBox(height: 20),
-              Text('Total Pengeluaran: Rp$totalExpense'),
+              Text('Total Pengeluaran: Rp$totalPengeluaran'),
               SizedBox(height: 20),
               Expanded(
                 child:
-                    transactions.isEmpty
+                    daftarTransaksi.isEmpty
                         ? Center(child: Text('Belum ada transaksi'))
                         : ListView.builder(
-                          itemCount: transactions.length,
+                          itemCount: daftarTransaksi.length,
                           itemBuilder: (context, index) {
                             final isIncome =
-                                transactions[index]['tipe'] == 'pemasukan';
+                                daftarTransaksi[index]['tipe'] == 'pemasukan';
 
                             return ListTile(
                               title: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(transactions[index]['nama']),
+                                  Text(daftarTransaksi[index]['nama']),
                                   Text(
-                                    transactions[index]['tanggal'],
+                                    daftarTransaksi[index]['tanggal'],
                                     style: TextStyle(
                                       fontSize: 12,
                                       color: Colors.grey,
@@ -87,7 +82,7 @@ class HomePage extends StatelessWidget {
                                 ],
                               ),
                               subtitle: Text(
-                                'Rp${transactions[index]['jumlah']}',
+                                'Rp${daftarTransaksi[index]['jumlah']}',
                               ),
                               leading: Icon(
                                 isIncome ? Icons.download : Icons.upload,
@@ -114,13 +109,23 @@ class HomePage extends StatelessWidget {
                 ),
               ),
               floatingActionButton: FloatingActionButton(
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => const CreatePage()),
+                onPressed: () async {
+                  final hasil = await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const CreatePage(),
+                    ),
                   );
+
+                  if (hasil != null && hasil is Map<String, dynamic>) {
+                    setState(() {
+                      daftarTransaksi.add(hasil);
+                    });
+                  }
                 },
                 child: const Icon(Icons.add),
               ),
             );
           }
-        }
+}
+

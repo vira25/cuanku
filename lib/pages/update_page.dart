@@ -81,6 +81,20 @@ class _UpdatePageState extends State<UpdatePage> {
                     });
                   },
                 ),
+                const SizedBox(height: 20),
+
+                const Text("Jumlah"),
+                TextField(
+                  controller: jumlahController,
+                  keyboardType: TextInputType.number,
+                ),
+                const SizedBox(height: 20),
+                Center(
+                  child: ElevatedButton(
+                    onPressed: updateTransaksi,
+                    child: const Text("Simpan"),
+                  ),
+                ),
               ],
             ),
           ),
