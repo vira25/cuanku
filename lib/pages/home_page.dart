@@ -42,16 +42,16 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Uang Lalu lintas'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => const CreatePage()),
-              );
-            },
-          ),
-        ],
+        // actions: [
+        //   IconButton(
+        //     icon: Icon(Icons.add),
+        //     onPressed: () {
+        //       Navigator.of(context).push(
+        //         MaterialPageRoute(builder: (context) => const CreatePage()),
+        //       );
+        //     },
+        //   ),
+        // ],
       ),
       body: SafeArea(
         child: Padding(
@@ -108,11 +108,19 @@ class HomePage extends StatelessWidget {
                             );
                           },
                         ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
+              floatingActionButton: FloatingActionButton(
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => const CreatePage()),
+                  );
+                },
+                child: const Icon(Icons.add),
+              ),
+            );
+          }
+        }

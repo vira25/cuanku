@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:cuanku/pages/create_page.dart';
 import 'package:cuanku/pages/home_page.dart';
 
 const String supabaseKey =
