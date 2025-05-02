@@ -10,7 +10,7 @@ class UpdatePage extends StatefulWidget {
 }
 
 class _UpdatePageState extends State<UpdatePage> {
-  final TextEditingController tangggalController = TextEditingController();
+  final TextEditingController tanggalController = TextEditingController();
   final TextEditingController namaController = TextEditingController();
   final TextEditingController jumlahController = TextEditingController();
 
@@ -20,7 +20,7 @@ class _UpdatePageState extends State<UpdatePage> {
   void initState() {
     super.initState();
     // Inisialisasi controller dengan data transaksi yang ada
-    tangggalController.text = widget.transaksi['tanggal'];
+    tanggalController.text = widget.transaksi['tanggal'];
     namaController.text = widget.transaksi['nama'];
     jumlahController.text = widget.transaksi['jumlah'].toString();
     tipeTransaksi = widget.transaksi['tipe'];
@@ -28,7 +28,7 @@ class _UpdatePageState extends State<UpdatePage> {
 
   void updateTransaksi() async {
     final transaksiBaru = {
-      'tanggal': tangggalController.text,
+      'tanggal': tanggalController.text,
       'nama': namaController.text,
       'jumlah': int.parse(jumlahController.text),
       'tipe': tipeTransaksi,
@@ -42,6 +42,23 @@ class _UpdatePageState extends State<UpdatePage> {
     return Scaffold(
       appBar: AppBar(title: const Text('Update Transaksi'), centerTitle: true),
       // Tambahkan konten body di sini jika diperlukan
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text("Tanggal"),
+                TextField(
+                  controller: tanggalController,
+                  decoration: const InputDecoration(hintText: "YYYY-MM-DD"),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
