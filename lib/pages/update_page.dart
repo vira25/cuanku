@@ -54,6 +54,33 @@ class _UpdatePageState extends State<UpdatePage> {
                   controller: tanggalController,
                   decoration: const InputDecoration(hintText: "YYYY-MM-DD"),
                 ),
+                const SizedBox(height: 20),
+
+                const Text("Nama Transaksi"),
+                TextField(controller: namaController),
+                const SizedBox(height: 20),
+
+                const Text("Tipe Transaksi"),
+                RadioListTile(
+                  title: const Text('pemasukan'),
+                  value: 'pemasukan',
+                  groupValue: tipeTransaksi,
+                  onChanged: (value) {
+                    setState(() {
+                      tipeTransaksi = value.toString();
+                    });
+                  },
+                ),
+                RadioListTile(
+                  title: const Text('pengeluaran'),
+                  value: 'pengeluaran',
+                  groupValue: tipeTransaksi,
+                  onChanged: (value) {
+                    setState(() {
+                      tipeTransaksi = value.toString();
+                    });
+                  },
+                ),
               ],
             ),
           ),
