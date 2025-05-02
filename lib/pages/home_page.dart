@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 //import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:cuanku/pages/create_page.dart';
+import 'package:cuanku/pages/update_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -10,44 +11,42 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-    final List<Map<String, dynamic>> daftarTransaksi = [
-      {
-        'id': 1,
-        'nama': 'Gaji Pertama',
-        'tanggal': '2025-04-02',
-        'jumlah': 5000000,
-        'tipe': 'pemasukan',
-      },
-      {
-        'id': 2,
-        'nama': 'Belanja',
-        'tanggal': '2025-04-03',
-        'jumlah': 150000,
-        'tipe': 'pengeluaran',
-      },
-      {
-        'id': 3,
-        'nama': 'Gaji Kedua',
-        'tanggal': '2025-05-02',
-        'jumlah': 10000000,
-        'tipe': 'pemasukan',
-      },
-    ];
+  final List<Map<String, dynamic>> daftarTransaksi = [
+    {
+      'id': 1,
+      'nama': 'Gaji Pertama',
+      'tanggal': '2025-04-02',
+      'jumlah': 5000000,
+      'tipe': 'pemasukan',
+    },
+    {
+      'id': 2,
+      'nama': 'Belanja',
+      'tanggal': '2025-04-03',
+      'jumlah': 150000,
+      'tipe': 'pengeluaran',
+    },
+    {
+      'id': 3,
+      'nama': 'Gaji Kedua',
+      'tanggal': '2025-05-02',
+      'jumlah': 10000000,
+      'tipe': 'pemasukan',
+    },
+  ];
 
-    int get totalPemasukan => daftarTransaksi
-        .where((transaksi) => transaksi['tipe'] == 'pemasukan')
-        .fold(0, (sum, transaksi) => sum + (transaksi['jumlah'] as int));
+  int get totalPemasukan => daftarTransaksi
+      .where((transaksi) => transaksi['tipe'] == 'pemasukan')
+      .fold(0, (sum, transaksi) => sum + (transaksi['jumlah'] as int));
 
-    int get totalPengeluaran => daftarTransaksi
-        .where((transaksi) => transaksi['tipe'] == 'pengeluaran')
-        .fold(0, (sum, transaksi) => sum + (transaksi['jumlah'] as int));
+  int get totalPengeluaran => daftarTransaksi
+      .where((transaksi) => transaksi['tipe'] == 'pengeluaran')
+      .fold(0, (sum, transaksi) => sum + (transaksi['jumlah'] as int));
 
-    @override
-    Widget build(BuildContext context) {
-      return Scaffold(
-      appBar: AppBar(
-        title: Text('Uang Lalu lintas'),
-      ),
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Uang Lalu lintas')),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -92,7 +91,24 @@ class _HomePageState extends State<HomePage> {
                                 children: [
                                   IconButton(
                                     icon: Icon(Icons.edit, color: Colors.blue),
-                                    onPressed: () {},
+                                    onPressed: () async {
+                                      final hasil = await Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder:
+                                              (context) => UpdatePage(
+                                                transaksi:
+                                                    daftarTransaksi[index],
+                                              ),
+                                        ),
+                                      );
+                                      if (hasil != null &&
+                                          hasil is Map<String, dynamic>) {
+                                        setState(() {
+                                          daftarTransaksi[index] = hasil;
+                                        });
+                                      }
+                                    },
                                   ),
                                   IconButton(
                                     icon: Icon(Icons.delete, color: Colors.red),
@@ -103,29 +119,26 @@ class _HomePageState extends State<HomePage> {
                             );
                           },
                         ),
-                      ),
-                    ],
-                  ),
-                ),
               ),
-              floatingActionButton: FloatingActionButton(
-                onPressed: () async {
-                  final hasil = await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const CreatePage(),
-                    ),
-                  );
+            ],
+          ),
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          final hasil = await Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const CreatePage()),
+          );
 
-                  if (hasil != null && hasil is Map<String, dynamic>) {
-                    setState(() {
-                      daftarTransaksi.add(hasil);
-                    });
-                  }
-                },
-                child: const Icon(Icons.add),
-              ),
-            );
+          if (hasil != null && hasil is Map<String, dynamic>) {
+            setState(() {
+              daftarTransaksi.add(hasil);
+            });
           }
+        },
+        child: const Icon(Icons.add),
+      ),
+    );
+  }
 }
-
