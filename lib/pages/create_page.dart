@@ -21,7 +21,7 @@ class _CreatePageState extends State<CreatePage> {
       appBar: AppBar(title: const Text("Tambah Transaksi"), centerTitle: true),
       body: Container(
         decoration: BoxDecoration(
-          // untuk memberikan warna background
+          // untuk memberikan warna pada background
           color: Colors.blue[50],
         ),
         child: SafeArea(
