@@ -44,7 +44,7 @@ class _UpdatePageState extends State<UpdatePage> {
       // Tambahkan konten body di sini jika diperlukan
       body: Container(
         decoration: BoxDecoration(
-          color: Colors.lightBlueAccent[50], // warna backgorund
+          color: Colors.blue[50], // warna backgorund
         ),
         child: SafeArea(
           child: Padding(
