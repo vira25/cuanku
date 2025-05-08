@@ -19,7 +19,7 @@ class _UpdatePageState extends State<UpdatePage> {
   @override
   void initState() {
     super.initState();
-    // Inisialisasi controller dengan data transaksi yang ada
+    // Edit dengan data yang sudah ada
     tanggalController.text = widget.transaksi['tanggal'];
     namaController.text = widget.transaksi['nama'];
     jumlahController.text = widget.transaksi['jumlah'].toString();
