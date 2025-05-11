@@ -112,7 +112,11 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                   IconButton(
                                     icon: Icon(Icons.delete, color: Colors.red),
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      setState(() {
+                                        daftarTransaksi.removeAt(index);
+                                      });
+                                    },
                                   ),
                                 ],
                               ),
