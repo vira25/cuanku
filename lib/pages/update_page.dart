@@ -26,6 +26,22 @@ class _UpdatePageState extends State<UpdatePage> {
     tipeTransaksi = widget.transaksi['tipe'];
   }
 
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.parse(tanggalController.text),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
+    );
+
+    if (picked != null) {
+      setState(() {
+        tanggalController.text =
+            "${picked.year}-${picked.month.toString().padLeft(2, '0')}-${picked.day.toString().padLeft(2, '0')}";
+      });
+    }
+  }
+
   void updateTransaksi() async {
     final transaksiBaru = {
       'tanggal': tanggalController.text,
@@ -54,10 +70,21 @@ class _UpdatePageState extends State<UpdatePage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text("Tanggal"),
-                  TextField(
-                    controller: tanggalController,
-                    decoration: const InputDecoration(hintText: "YYYY-MM-DD"),
+                  GestureDetector(
+                    onTap: () => _selectDate(context),
+                    child: AbsorbPointer(
+                      child: TextField(
+                        controller: tanggalController,
+                        decoration: const InputDecoration(
+                          hintText: "YYYY-MM-DD",
+                        ),
+                      ),
+                    ),
                   ),
+                  // TextField(
+                  //   controller: tanggalController,
+                  //   decoration: const InputDecoration(hintText: "YYYY-MM-DD"),
+                  // ),
                   const SizedBox(height: 20),
                   const Text("Nama Transaksi"),
                   TextField(controller: namaController),
