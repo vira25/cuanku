@@ -59,7 +59,6 @@ class _UpdatePageState extends State<UpdatePage> {
                     decoration: const InputDecoration(hintText: "YYYY-MM-DD"),
                   ),
                   const SizedBox(height: 20),
-
                   const Text("Nama Transaksi"),
                   TextField(controller: namaController),
                   const SizedBox(height: 20),

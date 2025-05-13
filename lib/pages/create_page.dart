@@ -9,11 +9,27 @@ class CreatePage extends StatefulWidget {
 }
 
 class _CreatePageState extends State<CreatePage> {
-  final TextEditingController tangggalController = TextEditingController();
+  final TextEditingController tanggalController = TextEditingController();
   final TextEditingController namaController = TextEditingController();
   final TextEditingController jumlahController = TextEditingController();
 
   String tipeTransaksi = 'pemasukan';
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
+    );
+
+    if (picked != null) {
+      setState(() {
+        tanggalController.text =
+            "${picked.year}-${picked.month.toString().padLeft(2, '0')}-${picked.day.toString().padLeft(2, '0')}";
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,10 +48,21 @@ class _CreatePageState extends State<CreatePage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text("Tanggal"),
-                  TextField(
-                    controller: tangggalController,
-                    decoration: const InputDecoration(hintText: "YYYY-MM-DD"),
+                  GestureDetector(
+                    onTap: () => _selectDate(context),
+                    child: AbsorbPointer(
+                      child: TextField(
+                        controller: tanggalController,
+                        decoration: const InputDecoration(
+                          hintText: "YYYY-MM-DD",
+                        ),
+                      ),
+                    ),
                   ),
+                  // TextField(
+                  //   controller: tanggalController,
+                  //   decoration: const InputDecoration(hintText: "YYYY-MM-DD"),
+                  // ),
                   const SizedBox(height: 16),
                   const Text("Nama Transaksi"),
                   TextField(controller: namaController),
@@ -72,7 +99,7 @@ class _CreatePageState extends State<CreatePage> {
                     child: ElevatedButton(
                       onPressed: () {
                         final transaksiBaru = {
-                          'tanggal': tangggalController.text,
+                          'tanggal': tanggalController.text,
                           'nama': namaController.text,
                           'tipe': tipeTransaksi,
                           'jumlah': int.parse(jumlahController.text),
