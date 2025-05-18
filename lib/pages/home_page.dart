@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-//import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:cuanku/pages/create_page.dart';
 import 'package:cuanku/pages/update_page.dart';
 
@@ -11,29 +11,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final List<Map<String, dynamic>> daftarTransaksi = [
-    {
-      'id': 1,
-      'nama': 'Gaji Pertama',
-      'tanggal': '2025-04-02',
-      'jumlah': 5000000,
-      'tipe': 'pemasukan',
-    },
-    {
-      'id': 2,
-      'nama': 'Belanja',
-      'tanggal': '2025-04-03',
-      'jumlah': 150000,
-      'tipe': 'pengeluaran',
-    },
-    {
-      'id': 3,
-      'nama': 'Gaji Kedua',
-      'tanggal': '2025-05-02',
-      'jumlah': 10000000,
-      'tipe': 'pemasukan',
-    },
-  ];
+  List<Map<String, dynamic>> daftarTransaksi = [];
 
   int get totalPemasukan => daftarTransaksi
       .where((transaksi) => transaksi['tipe'] == 'pemasukan')
@@ -42,6 +20,27 @@ class _HomePageState extends State<HomePage> {
   int get totalPengeluaran => daftarTransaksi
       .where((transaksi) => transaksi['tipe'] == 'pengeluaran')
       .fold(0, (sum, transaksi) => sum + (transaksi['jumlah'] as int));
+
+  Future<void> fetchData() async {
+    try {
+      final response = await Supabase.instance.client
+          .from('uanglalulintas')
+          .select()
+          .order('tanggal', ascending: false);
+
+      setState(() {
+        daftarTransaksi = List<Map<String, dynamic>>.from(response);
+      });
+    } catch (e) {
+      debugPrint('Gagal insert: $e');
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -137,7 +136,7 @@ class _HomePageState extends State<HomePage> {
 
           if (hasil != null && hasil is Map<String, dynamic>) {
             setState(() {
-              daftarTransaksi.add(hasil);
+              daftarTransaksi.insert(0, hasil);
             });
           }
         },

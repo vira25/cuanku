@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 // import "package:cuanku/pages/create_page.dart";
 
 class CreatePage extends StatefulWidget {
@@ -31,6 +32,25 @@ class _CreatePageState extends State<CreatePage> {
     }
   }
 
+  // untuk menyimpan data transaksi ke database/supabases
+  Future<void> _simpanTransaksi() async {
+    try {
+      final response =
+          await Supabase.instance.client.from('uanglalulintas').insert({
+            'tanggal': tanggalController.text,
+            'nama': namaController.text,
+            'tipe': tipeTransaksi,
+            'jumlah': int.parse(jumlahController.text),
+          }).select();
+      if (!mounted) return; // mencegah eror saat menggunakan context
+      if (response.isNotEmpty) {
+        Navigator.pop(context, response.first); // kembali ke halaman sebelumnya
+      }
+    } catch (e) {
+      debugPrint('Gagal menyimpan transaksi: $e'); //menampilkan pesan eror
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,10 +79,6 @@ class _CreatePageState extends State<CreatePage> {
                       ),
                     ),
                   ),
-                  // TextField(
-                  //   controller: tanggalController,
-                  //   decoration: const InputDecoration(hintText: "YYYY-MM-DD"),
-                  // ),
                   const SizedBox(height: 16),
                   const Text("Nama Transaksi"),
                   TextField(controller: namaController),
@@ -97,15 +113,7 @@ class _CreatePageState extends State<CreatePage> {
                   const SizedBox(height: 16),
                   Center(
                     child: ElevatedButton(
-                      onPressed: () {
-                        final transaksiBaru = {
-                          'tanggal': tanggalController.text,
-                          'nama': namaController.text,
-                          'tipe': tipeTransaksi,
-                          'jumlah': int.parse(jumlahController.text),
-                        };
-                        Navigator.pop(context, transaksiBaru);
-                      },
+                      onPressed: _simpanTransaksi,
                       child: const Text("Simpan"),
                     ),
                   ),
