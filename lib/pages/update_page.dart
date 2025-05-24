@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class UpdatePage extends StatefulWidget {
   final Map<String, dynamic> transaksi; // Data transaksi yang akan diupdate
@@ -27,6 +28,7 @@ class _UpdatePageState extends State<UpdatePage> {
   }
 
   Future<void> _selectDate(BuildContext context) async {
+    //utuk memilih tanggal dari date picker
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: DateTime.parse(tanggalController.text),
@@ -50,7 +52,34 @@ class _UpdatePageState extends State<UpdatePage> {
       'tipe': tipeTransaksi,
     };
 
-    Navigator.pop(context, transaksiBaru);
+    try {
+      final response =
+          await Supabase.instance.client
+              .from('uanglalulintas')
+              .update(transaksiBaru)
+              .eq('id', widget.transaksi['id'])
+              .select();
+
+      if (!mounted) return; // mencegah eror saat menggunakan context
+      if (response.isNotEmpty) {
+        Navigator.pop(context, {
+          'status': 'success',
+          'message': 'Transaksi berhasil diupdate',
+          'data': response.first,
+        });
+      }
+    } catch (e) {
+      debugPrint('Gagal update transaksi: $e');
+
+      if (mounted) {
+        //kirim pesan gagal ke homapage
+        Navigator.pop(context, {
+          'status': 'error',
+          'message': 'Gagal update transaksi',
+        });
+      }
+      // Navigator.pop(context, transaksiBaru);
+    }
   }
 
   @override

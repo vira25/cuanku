@@ -13,14 +13,17 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   List<Map<String, dynamic>> daftarTransaksi = [];
 
+  //hitung total pemasukan
   int get totalPemasukan => daftarTransaksi
       .where((transaksi) => transaksi['tipe'] == 'pemasukan')
       .fold(0, (sum, transaksi) => sum + (transaksi['jumlah'] as int));
 
+  //hitung total pengeluaran
   int get totalPengeluaran => daftarTransaksi
       .where((transaksi) => transaksi['tipe'] == 'pengeluaran')
       .fold(0, (sum, transaksi) => sum + (transaksi['jumlah'] as int));
 
+  // Fungsi untuk mengambil data dari database
   Future<void> fetchData() async {
     try {
       final response = await Supabase.instance.client
@@ -39,7 +42,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    fetchData();
+    fetchData(); // Ambil data saat pertama kali halaman dibuka
   }
 
   @override
@@ -91,6 +94,7 @@ class _HomePageState extends State<HomePage> {
                                   IconButton(
                                     icon: Icon(Icons.edit, color: Colors.blue),
                                     onPressed: () async {
+                                      // Navigarsi kehalaman update dan tunggu hasilnya
                                       final hasil = await Navigator.push(
                                         context,
                                         MaterialPageRoute(
@@ -103,9 +107,30 @@ class _HomePageState extends State<HomePage> {
                                       );
                                       if (hasil != null &&
                                           hasil is Map<String, dynamic>) {
-                                        setState(() {
-                                          daftarTransaksi[index] = hasil;
-                                        });
+                                        final status = hasil['status'];
+                                        final message = hasil['message'];
+
+                                        //Tampilkan pesan menggunakan snackBar
+                                        ScaffoldMessenger.of(
+                                          context,
+                                        ).showSnackBar(
+                                          SnackBar(
+                                            content: Text(message),
+                                            backgroundColor:
+                                                status == 'success'
+                                                    ? Colors.green
+                                                    : Colors.red,
+                                          ),
+                                        );
+                                        if (status == 'success' &&
+                                            hasil.containsKey('data')) {
+                                          setState(() {
+                                            daftarTransaksi[index] =
+                                                hasil['data'];
+                                          });
+                                        } else if (status == 'success') {
+                                          await fetchData();
+                                        }
                                       }
                                     },
                                   ),
