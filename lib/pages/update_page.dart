@@ -110,10 +110,6 @@ class _UpdatePageState extends State<UpdatePage> {
                       ),
                     ),
                   ),
-                  // TextField(
-                  //   controller: tanggalController,
-                  //   decoration: const InputDecoration(hintText: "YYYY-MM-DD"),
-                  // ),
                   const SizedBox(height: 20),
                   const Text("Nama Transaksi"),
                   TextField(controller: namaController),
