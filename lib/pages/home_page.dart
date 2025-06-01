@@ -67,153 +67,178 @@ class _HomePageState extends State<HomePage> {
                           itemBuilder: (context, index) {
                             final isIncome =
                                 daftarTransaksi[index]['tipe'] == 'pemasukan';
-
-                            return ListTile(
-                              title: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(daftarTransaksi[index]['nama']),
-                                  Text(
-                                    daftarTransaksi[index]['tanggal'],
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                ],
+                            // agar transaksinya
+                            return Card(
+                              margin: const EdgeInsets.symmetric(
+                                vertical: 8,
+                              ), //memberikan jarak vertikal anatar atas dan bawah 8 piksel
+                              elevation: 3, // bayangan kotak
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(
+                                  12,
+                                ), //agar sudut kotak menjadi melengkung dgn radius 12 piksel
                               ),
-                              subtitle: Text(
-                                'Rp${daftarTransaksi[index]['jumlah']}',
-                              ),
-                              leading: Icon(
-                                isIncome ? Icons.download : Icons.upload,
-                                color: isIncome ? Colors.green : Colors.red,
-                              ),
-                              trailing: Wrap(
-                                children: [
-                                  IconButton(
-                                    icon: Icon(Icons.edit, color: Colors.blue),
-                                    onPressed: () async {
-                                      // Navigarsi kehalaman update dan tunggu hasilnya
-                                      final hasil = await Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder:
-                                              (context) => UpdatePage(
-                                                transaksi:
-                                                    daftarTransaksi[index],
-                                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: ListTile(
+                                  title: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(daftarTransaksi[index]['nama']),
+                                      Text(
+                                        daftarTransaksi[index]['tanggal'],
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: Colors.grey,
                                         ),
-                                      );
-                                      if (hasil != null &&
-                                          hasil is Map<String, dynamic>) {
-                                        final status = hasil['status'];
-                                        final message = hasil['message'];
-
-                                        //Tampilkan pesan menggunakan snackBar
-                                        ScaffoldMessenger.of(
-                                          context,
-                                        ).showSnackBar(
-                                          SnackBar(
-                                            content: Text(message),
-                                            backgroundColor:
-                                                status == 'success'
-                                                    ? Colors.green
-                                                    : Colors.red,
-                                          ),
-                                        );
-                                        if (status == 'success' &&
-                                            hasil.containsKey('data')) {
-                                          setState(() {
-                                            daftarTransaksi[index] =
-                                                hasil['data'];
-                                          });
-                                        } else if (status == 'success') {
-                                          await fetchData();
-                                        }
-                                      }
-                                    },
+                                      ),
+                                    ],
                                   ),
-                                  IconButton(
-                                    icon: Icon(Icons.delete, color: Colors.red),
-                                    onPressed: () async {
-                                      final id =
-                                          daftarTransaksi[index]['id']; //Ambil ID transaksi yang mau dihapus
-                                      final konfirmasi = await showDialog<bool>(
-                                        // Tampilkan dialog konfirmasi hapus
-                                        context: context,
-                                        builder:
-                                            (context) => AlertDialog(
-                                              title: Text('Hapus Transaksi'),
-                                              content: Text(
-                                                'Apakah kamu yakin ingin menghapus transaksi ini???',
+                                  subtitle: Text(
+                                    'Rp${daftarTransaksi[index]['jumlah']}',
+                                  ),
+                                  leading: Icon(
+                                    isIncome ? Icons.download : Icons.upload,
+                                    color: isIncome ? Colors.green : Colors.red,
+                                  ),
+                                  trailing: Wrap(
+                                    children: [
+                                      IconButton(
+                                        icon: Icon(
+                                          Icons.edit,
+                                          color: Colors.blue,
+                                        ),
+                                        onPressed: () async {
+                                          // Navigarsi kehalaman update dan tunggu hasilnya
+                                          final hasil = await Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder:
+                                                  (context) => UpdatePage(
+                                                    transaksi:
+                                                        daftarTransaksi[index],
+                                                  ),
+                                            ),
+                                          );
+                                          if (hasil != null &&
+                                              hasil is Map<String, dynamic>) {
+                                            final status = hasil['status'];
+                                            final message = hasil['message'];
+
+                                            //Tampilkan pesan menggunakan snackBar
+                                            ScaffoldMessenger.of(
+                                              context,
+                                            ).showSnackBar(
+                                              SnackBar(
+                                                content: Text(message),
+                                                backgroundColor:
+                                                    status == 'success'
+                                                        ? Colors.green
+                                                        : Colors.red,
                                               ),
-                                              actions: [
-                                                TextButton(
-                                                  onPressed:
-                                                      () => Navigator.pop(
-                                                        context,
-                                                        false,
-                                                      ), // jika batal
-                                                  child: Text('Batal'),
+                                            );
+                                            if (status == 'success' &&
+                                                hasil.containsKey('data')) {
+                                              setState(() {
+                                                daftarTransaksi[index] =
+                                                    hasil['data'];
+                                              });
+                                            } else if (status == 'success') {
+                                              await fetchData();
+                                            }
+                                          }
+                                        },
+                                      ),
+                                      IconButton(
+                                        icon: Icon(
+                                          Icons.delete,
+                                          color: Colors.red,
+                                        ),
+                                        onPressed: () async {
+                                          final id =
+                                              daftarTransaksi[index]['id']; //Ambil ID transaksi yang mau dihapus
+                                          final konfirmasi = await showDialog<
+                                            bool
+                                          >(
+                                            // Tampilkan dialog konfirmasi hapus
+                                            context: context,
+                                            builder:
+                                                (context) => AlertDialog(
+                                                  title: Text(
+                                                    'Hapus Transaksi',
+                                                  ),
+                                                  content: Text(
+                                                    'Apakah kamu yakin ingin menghapus transaksi ini???',
+                                                  ),
+                                                  actions: [
+                                                    TextButton(
+                                                      onPressed:
+                                                          () => Navigator.pop(
+                                                            context,
+                                                            false,
+                                                          ), // jika batal
+                                                      child: Text('Batal'),
+                                                    ),
+                                                    TextButton(
+                                                      onPressed:
+                                                          () => Navigator.pop(
+                                                            context,
+                                                            true,
+                                                          ), // jika setujuu
+                                                      child: Text('Hapus'),
+                                                    ),
+                                                  ],
                                                 ),
-                                                TextButton(
-                                                  onPressed:
-                                                      () => Navigator.pop(
-                                                        context,
-                                                        true,
-                                                      ), // jika setujuu
-                                                  child: Text('Hapus'),
-                                                ),
-                                              ],
-                                            ),
-                                      );
-                                      if (konfirmasi != true) {
-                                        return; // Jika tidak dihapus, keluar dari fungsi
-                                      }
-                                      try {
-                                        await Supabase.instance.client
-                                            .from(
-                                              'uanglalulinta',
-                                            ) // pilih tabel 'uanglalulintas'
-                                            .delete() // untuk menghapus data dari tabel
-                                            .eq(
-                                              'id',
-                                              id,
-                                            ); // hapus dari Supabase berdasarkan ID
+                                          );
+                                          if (konfirmasi != true) {
+                                            return; // Jika tidak dihapus, keluar dari fungsi
+                                          }
+                                          try {
+                                            await Supabase.instance.client
+                                                .from(
+                                                  'uanglalulinta',
+                                                ) // pilih tabel 'uanglalulintas'
+                                                .delete() // untuk menghapus data dari tabel
+                                                .eq(
+                                                  'id',
+                                                  id,
+                                                ); // hapus dari Supabase berdasarkan ID
 
-                                        setState(() {
-                                          daftarTransaksi.removeAt(
-                                            index,
-                                          ); // menghapus transaksi dari daftarTransaksi (UI)
-                                        });
-                                        ScaffoldMessenger.of(
-                                          context,
-                                        ).showSnackBar(
-                                          // Tampilkan pesan notifikasi bahwa hapus berhasil
-                                          SnackBar(
-                                            content: Text(
-                                              'Transaksi berhasil dihapus',
-                                            ),
-                                            backgroundColor: Colors.green,
-                                          ),
-                                        );
-                                      } catch (e) {
-                                        ScaffoldMessenger.of(
-                                          context,
-                                        ).showSnackBar(
-                                          // Tampilkan pesan notifikasi bahwa hapus gagal
-                                          SnackBar(
-                                            content: Text(
-                                              'Gagal menghapus transaksi: $e',
-                                            ),
-                                            backgroundColor: Colors.red,
-                                          ),
-                                        );
-                                      }
-                                    },
+                                            setState(() {
+                                              daftarTransaksi.removeAt(
+                                                index,
+                                              ); // menghapus transaksi dari daftarTransaksi (UI)
+                                            });
+                                            ScaffoldMessenger.of(
+                                              context,
+                                            ).showSnackBar(
+                                              // Tampilkan pesan notifikasi bahwa hapus berhasil
+                                              SnackBar(
+                                                content: Text(
+                                                  'Transaksi berhasil dihapus',
+                                                ),
+                                                backgroundColor: Colors.green,
+                                              ),
+                                            );
+                                          } catch (e) {
+                                            ScaffoldMessenger.of(
+                                              context,
+                                            ).showSnackBar(
+                                              // Tampilkan pesan notifikasi bahwa hapus gagal
+                                              SnackBar(
+                                                content: Text(
+                                                  'Gagal menghapus transaksi: $e',
+                                                ),
+                                                backgroundColor: Colors.red,
+                                              ),
+                                            );
+                                          }
+                                        },
+                                      ),
+                                    ],
                                   ),
-                                ],
+                                ),
                               ),
                             );
                           },
@@ -223,6 +248,7 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
+      // Tombol untuk menambah transaksi baru
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           final hasil = await Navigator.push(
