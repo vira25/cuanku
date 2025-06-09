@@ -30,7 +30,6 @@ class _HomePageState extends State<HomePage> {
           .from('uanglalulintas')
           .select()
           .order('tanggal', ascending: false);
-
       setState(() {
         daftarTransaksi = List<Map<String, dynamic>>.from(response);
       });
@@ -54,9 +53,45 @@ class _HomePageState extends State<HomePage> {
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
-              Text('Total Pemasukan: Rp$totalPemasukan'),
-              SizedBox(height: 20),
-              Text('Total Pengeluaran: Rp$totalPengeluaran'),
+              Card(
+                // ignore: deprecated_member_use (menghilangkan warning deprecated)
+                color: Colors.green.withOpacity(0.2), // warna hijau transparan
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12), // sudut melengkung
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Icon(Icons.download, color: Colors.green),
+                      Text(
+                        'Total Pemasukan: Rp$totalPemasukan',
+                      ), // Menampilkan total pemasukan
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(height: 16), // jarak antar card
+              Card(
+                // ignore: deprecated_member_use
+                color: Colors.red.withOpacity(0.2),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12), // sudut melengkung
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Icon(Icons.upload, color: Colors.red),
+                      Text(
+                        'Total Pengeluaran: Rp$totalPengeluaran',
+                      ), // Menampilkan total pengeluaran
+                    ],
+                  ),
+                ), // agar icon dan text berada di kiri dan kanan
+              ),
               SizedBox(height: 20),
               Expanded(
                 child:
@@ -67,7 +102,7 @@ class _HomePageState extends State<HomePage> {
                           itemBuilder: (context, index) {
                             final isIncome =
                                 daftarTransaksi[index]['tipe'] == 'pemasukan';
-                            // agar transaksinya
+                            // agar transaksinya punya kotak sendiri-sendiri
                             return Card(
                               margin: const EdgeInsets.symmetric(
                                 vertical: 8,
@@ -125,7 +160,6 @@ class _HomePageState extends State<HomePage> {
                                               hasil is Map<String, dynamic>) {
                                             final status = hasil['status'];
                                             final message = hasil['message'];
-
                                             //Tampilkan pesan menggunakan snackBar
                                             ScaffoldMessenger.of(
                                               context,
@@ -197,14 +231,13 @@ class _HomePageState extends State<HomePage> {
                                           try {
                                             await Supabase.instance.client
                                                 .from(
-                                                  'uanglalulinta',
+                                                  'uanglalulintas',
                                                 ) // pilih tabel 'uanglalulintas'
                                                 .delete() // untuk menghapus data dari tabel
                                                 .eq(
                                                   'id',
                                                   id,
-                                                ); // hapus dari Supabase berdasarkan ID
-
+                                                ); //hapus dari Supabase berdasarkan ID
                                             setState(() {
                                               daftarTransaksi.removeAt(
                                                 index,
@@ -255,7 +288,6 @@ class _HomePageState extends State<HomePage> {
             context,
             MaterialPageRoute(builder: (context) => const CreatePage()),
           );
-
           if (hasil != null && hasil is Map<String, dynamic>) {
             setState(() {
               daftarTransaksi.insert(0, hasil);
