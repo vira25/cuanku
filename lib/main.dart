@@ -20,10 +20,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Cuanku yey',
-      theme: ThemeData(primarySwatch: Colors.blue),
-      home: const LoginPage(),
+      debugShowCheckedModeBanner: false, // menghilangkan banner debug
+      title: 'Cuanku yey', // judul aplikasi
+      theme: ThemeData(primarySwatch: Colors.blue), // tema aplikasi
+      home: const LoginPage(), // mengarah ke halaman login
     );
   }
 }
