@@ -69,95 +69,120 @@ class _CreatePageState extends State<CreatePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text("Tambah Transaksi"), centerTitle: true),
-      body: Container(
-        decoration: BoxDecoration(
-          // untuk memberikan warna pada background
-          color: Colors.blue[50],
-        ),
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: SingleChildScrollView(
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text("Tanggal"),
-                    GestureDetector(
-                      onTap: () => _selectDate(context),
-                      child: AbsorbPointer(
-                        child: TextFormField(
-                          controller: tanggalController,
-                          decoration: const InputDecoration(
-                            hintText: "YYYY-MM-DD",
-                          ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Tanggal tidak boleh kosong';
-                            }
-                            return null;
-                          },
-                        ),
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: SingleChildScrollView(
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  TextFormField(
+                    controller: tanggalController,
+                    readOnly: true,
+                    onTap: () => _selectDate(context),
+                    decoration: InputDecoration(
+                      labelText: "Tanggal YYYY-MM-DD",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(12)),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(12)),
+                        borderSide: BorderSide(color: Colors.blue, width: 2),
+                      ),
+                      suffixIcon: Icon(Icons.calendar_today),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Tanggal tidak boleh kosong';
+                      }
+                      return null;
+                    },
+                  ),
+
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    controller: namaController,
+                    decoration: InputDecoration(
+                      labelText: "Nama Transaksi",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(12)),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(12)),
+                        borderSide: BorderSide(color: Colors.blue, width: 2),
                       ),
                     ),
-                    const SizedBox(height: 16),
-                    const Text("Nama Transaksi"),
-                    TextFormField(
-                      controller: namaController,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Nama tidak boleh kosong';
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(height: 16),
-                    const Text("Tipe Transaksi"),
-                    RadioListTile(
-                      title: const Text('pemasukan'),
-                      value: 'pemasukan',
-                      groupValue: tipeTransaksi,
-                      onChanged: (value) {
-                        setState(() {
-                          tipeTransaksi = value.toString();
-                        });
-                      },
-                    ),
-                    RadioListTile(
-                      title: const Text('pengeluaran'),
-                      value: 'pengeluaran',
-                      groupValue: tipeTransaksi,
-                      onChanged: (value) {
-                        setState(() {
-                          tipeTransaksi = value.toString();
-                        });
-                      },
-                    ),
-                    const SizedBox(height: 16),
-                    const Text("jumlah"),
-                    TextFormField(
-                      controller: jumlahController,
-                      keyboardType: TextInputType.number,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Jumlah tidak boleh kosong';
-                        }
-                        if (int.tryParse(value) == null) {
-                          return 'Jumlah harus berupa angka';
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(height: 16),
-                    Center(
-                      child: ElevatedButton(
-                        onPressed: _simpanTransaksi,
-                        child: const Text("Simpan"),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Nama tidak boleh kosong';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  DropdownButtonFormField<String>(
+                    value: tipeTransaksi,
+                    decoration: InputDecoration(
+                      labelText: "Tipe Transaksi",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide(color: Colors.blue, width: 2),
                       ),
                     ),
-                  ],
-                ),
+                    items: const [
+                      DropdownMenuItem(
+                        value: 'pemasukan',
+                        child: Text('Pemasukan'),
+                      ),
+                      DropdownMenuItem(
+                        value: 'pengeluaran',
+                        child: Text('Pengeluaran'),
+                      ),
+                    ],
+                    onChanged: (value) {
+                      setState(() {
+                        tipeTransaksi = value!;
+                      });
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    controller: jumlahController,
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                      labelText: "Jumlah",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(12)),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(12)),
+                        borderSide: BorderSide(color: Colors.blue, width: 2),
+                      ),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Jumlah tidak boleh kosong';
+                      }
+                      if (int.tryParse(value) == null) {
+                        return 'Jumlah harus berupa angka';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  Center(
+                    child: ElevatedButton(
+                      onPressed: _simpanTransaksi,
+                      child: const Text("Simpan"),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
