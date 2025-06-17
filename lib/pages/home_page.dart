@@ -292,6 +292,15 @@ class _HomePageState extends State<HomePage> {
             setState(() {
               daftarTransaksi.insert(0, hasil);
             });
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Transaksi berhasil ditambahkan'),
+                backgroundColor: Colors.green,
+                duration: Duration(seconds: 2),
+              ),
+            );
+            // Memanggil fetchData untuk memperbarui daftar transaksi (jika ingin mengambil data terbaru dari database)
+            // await fetchData();
           }
         },
         child: const Icon(Icons.add),
