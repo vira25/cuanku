@@ -121,7 +121,7 @@ class _UpdatePageState extends State<UpdatePage> {
                           ), // sudut melengkung saat fokus
                           borderSide: BorderSide(color: Colors.blue),
                         ), // warna border saat fokus
-                        suffixIcon: Icon(Icons.calendar_today), // ikon kalender
+                        suffixIcon: Icon(Icons.calendar_today),
                       ),
                     ),
                   ),
