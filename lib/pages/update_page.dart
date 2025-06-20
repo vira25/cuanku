@@ -53,19 +53,24 @@ class _UpdatePageState extends State<UpdatePage> {
     };
 
     try {
+      // Mengupdate data transaksi di Supabase
       final response =
           await Supabase.instance.client
-              .from('uanglalulintas')
-              .update(transaksiBaru)
-              .eq('id', widget.transaksi['id'])
-              .select();
+              .from('uanglalulintas') // nama tabel di Supabase
+              .update(transaksiBaru) // data yang akan diupdate
+              .eq(
+                'id',
+                widget.transaksi['id'],
+              ) // id transaksi yang akan diupdate
+              .select(); // untuk mendapatkan data yang sudah diupdate
 
       if (!mounted) return; // mencegah eror saat menggunakan context
       if (response.isNotEmpty) {
         Navigator.pop(context, {
-          'status': 'success',
-          'message': 'Transaksi berhasil diupdate',
-          'data': response.first,
+          // kembali ke halaman sebelumnya
+          'status': 'success', // status sukses
+          'message': 'Transaksi berhasil diupdate', // pesan sukses
+          'data': response.first, // data transaksi yang sudah diupdate
         });
       }
     } catch (e) {
@@ -87,71 +92,126 @@ class _UpdatePageState extends State<UpdatePage> {
     return Scaffold(
       appBar: AppBar(title: const Text('Update Transaksi'), centerTitle: true),
       // Tambahkan konten body di sini jika diperlukan
-      body: Container(
-        decoration: BoxDecoration(
-          color: Colors.blue[50], // warna backgorund
-        ),
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text("Tanggal"),
-                  GestureDetector(
-                    onTap: () => _selectDate(context),
-                    child: AbsorbPointer(
-                      child: TextField(
-                        controller: tanggalController,
-                        decoration: const InputDecoration(
-                          hintText: "YYYY-MM-DD",
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0), // ukuran padding sekitar konten
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                GestureDetector(
+                  onTap:
+                      () =>
+                          _selectDate(context), // buka date picker saat diklik
+                  child: AbsorbPointer(
+                    child: TextField(
+                      controller:
+                          tanggalController, // controller untuk text field tanggal
+                      decoration: const InputDecoration(
+                        labelText: "Tanggal",
+                        border: OutlineInputBorder(
+                          // border untuk text field
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(12),
+                          ), // sudut melengkung
                         ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(12),
+                          ), // sudut melengkung saat fokus
+                          borderSide: BorderSide(color: Colors.blue),
+                        ), // warna border saat fokus
+                        suffixIcon: Icon(Icons.calendar_today), // ikon kalender
                       ),
                     ),
                   ),
-                  const SizedBox(height: 20),
-                  const Text("Nama Transaksi"),
-                  TextField(controller: namaController),
-                  const SizedBox(height: 20),
-
-                  const Text("Tipe Transaksi"),
-                  RadioListTile(
-                    title: const Text('pemasukan'),
-                    value: 'pemasukan',
-                    groupValue: tipeTransaksi,
-                    onChanged: (value) {
-                      setState(() {
-                        tipeTransaksi = value.toString();
-                      });
-                    },
-                  ),
-                  RadioListTile(
-                    title: const Text('pengeluaran'),
-                    value: 'pengeluaran',
-                    groupValue: tipeTransaksi,
-                    onChanged: (value) {
-                      setState(() {
-                        tipeTransaksi = value.toString();
-                      });
-                    },
-                  ),
-                  const SizedBox(height: 20),
-
-                  const Text("Jumlah"),
-                  TextField(
-                    controller: jumlahController,
-                    keyboardType: TextInputType.number,
-                  ),
-                  const SizedBox(height: 20),
-                  Center(
-                    child: ElevatedButton(
-                      onPressed: updateTransaksi,
-                      child: const Text("Simpan"),
+                ),
+                const SizedBox(height: 20), // jarak antar elem
+                TextField(
+                  controller:
+                      namaController, // controller untuk text field nama transaksi
+                  decoration: const InputDecoration(
+                    labelText: "Nama Transaksi",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(12),
+                      ), // sudut melengkung
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(12),
+                      ), // sudut melengkung saat fokus
+                      borderSide: BorderSide(
+                        color: Colors.blue,
+                      ), // warna border saat fokus
                     ),
                   ),
-                ],
-              ),
+                ),
+                const SizedBox(height: 20),
+                DropdownButtonFormField<String>(
+                  value: tipeTransaksi,
+                  decoration: InputDecoration(
+                    labelText: "Tipe Transaksi",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: Colors.blue, width: 2),
+                    ),
+                  ),
+                  items: const [
+                    DropdownMenuItem(
+                      value: 'pemasukan',
+                      child: Text('Pemasukan'),
+                    ),
+                    DropdownMenuItem(
+                      value: 'pengeluaran',
+                      child: Text('Pengeluaran'),
+                    ),
+                  ],
+                  onChanged: (value) {
+                    setState(() {
+                      tipeTransaksi = value!;
+                    });
+                  },
+                ),
+                const SizedBox(height: 20),
+
+                TextField(
+                  controller:
+                      jumlahController, // controller untuk text field jumlah
+                  keyboardType:
+                      TextInputType.number, // keyboard untuk input angka
+                  decoration: const InputDecoration(
+                    // dekorasi text field jumlah
+                    labelText: "Jumlah",
+                    border: OutlineInputBorder(
+                      // border untuk text field
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(12),
+                      ), // sudut melengkung
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      // sudut melengkung saat fokus
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(12),
+                      ), // sudut melengkung saat fokus
+                      borderSide: BorderSide(
+                        color: Colors.blue,
+                      ), // warna border saat fokus
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                // Tombol untuk simpan
+                Center(
+                  child: ElevatedButton(
+                    onPressed: updateTransaksi, // fungsi untuk update transaksi
+                    child: const Text("Simpan"), // teks pada tombol
+                  ),
+                ),
+              ],
             ),
           ),
         ),
