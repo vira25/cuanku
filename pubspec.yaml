@@ -10,6 +10,8 @@ dependencies:
   flutter:
     sdk: flutter
   supabase_flutter: ^2.8.4
+  pie_chart: ^5.3.2
+  fl_chart: ^0.69.0
 
 dev_dependencies:
   flutter_test:
@@ -18,3 +20,7 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/images/bg_login.jpg
+    - assets/images/bg_update.jpg
+    - assets/images/bg_hompage.jpg

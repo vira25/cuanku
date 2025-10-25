@@ -30,32 +30,43 @@ class _UpdatePageState extends State<UpdatePage> {
   Future<void> _selectDate(BuildContext context) async {
     //utuk memilih tanggal dari date picker
     final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: DateTime.parse(tanggalController.text),
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2101),
+      // membuka date picker
+      context: context, // konteks dari widget
+      initialDate: DateTime.parse(
+        tanggalController.text,
+      ), // tanggal awal dari text controller
+      firstDate: DateTime(2000), // tanggal awal yang bisa dipilih
+      lastDate: DateTime(2101), // tanggal akhir yang bisa dipilih
     );
 
     if (picked != null) {
       setState(() {
+        // mengupdate state saat tanggal dipilih
         tanggalController.text =
             "${picked.year}-${picked.month.toString().padLeft(2, '0')}-${picked.day.toString().padLeft(2, '0')}";
-      });
+      }); // mengupdate text controller dengan format YYYY-MM-DD, dengan 2 digit untuk bulan dan hari
     }
   }
 
   void updateTransaksi() async {
+    // fungsi untuk mengupdate transaksi
+    // Validasi: cek apakah semua field sudah diisi
     final transaksiBaru = {
+      // data transaksi baru yang akan diupdate
       'tanggal': tanggalController.text,
       'nama': namaController.text,
-      'jumlah': int.parse(jumlahController.text),
+      'jumlah': int.parse(
+        jumlahController.text,
+      ), // jumlah harus diubah ke integer
       'tipe': tipeTransaksi,
     };
 
     try {
       // Mengupdate data transaksi di Supabase
       final response =
-          await Supabase.instance.client
+          await Supabase
+              .instance
+              .client // akses client Supabase
               .from('uanglalulintas') // nama tabel di Supabase
               .update(transaksiBaru) // data yang akan diupdate
               .eq(
@@ -97,13 +108,16 @@ class _UpdatePageState extends State<UpdatePage> {
           padding: const EdgeInsets.all(16.0), // ukuran padding sekitar konten
           child: SingleChildScrollView(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment:
+                  CrossAxisAlignment.start, // untuk mengatur posisi konten
               children: [
                 GestureDetector(
+                  // untuk mendeteksi klik pada text field tanggal
                   onTap:
                       () =>
                           _selectDate(context), // buka date picker saat diklik
                   child: AbsorbPointer(
+                    // agar text field tidak bisa diedit secara manual
                     child: TextField(
                       controller:
                           tanggalController, // controller untuk text field tanggal
@@ -120,8 +134,10 @@ class _UpdatePageState extends State<UpdatePage> {
                             Radius.circular(12),
                           ), // sudut melengkung saat fokus
                           borderSide: BorderSide(color: Colors.blue),
-                        ), // warna border saat fokus
-                        suffixIcon: Icon(Icons.calendar_today),
+                        ), // sisi border berwarna biru saat fokus
+                        suffixIcon: Icon(
+                          Icons.calendar_today,
+                        ), // ikon kalender di akhir text field
                       ),
                     ),
                   ),
